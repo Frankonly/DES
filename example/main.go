@@ -1,7 +1,7 @@
 package main
 
 import (
-	mydes "./des"
+	mydes "../DES"
 	"encoding/hex"
 	"fmt"
 )
@@ -19,19 +19,19 @@ func desEncrypt(c *mydes.Cipher, plaintext string) string {
 		cipherByte := c.Encrypt(plainBytes[i*8 : i*8+8])
 		ciphertext += hex.EncodeToString(cipherByte)
 	}
-	return ciphertext
+	return "ciphertext:" + ciphertext
 }
 func desDecrypt(c *mydes.Cipher, ciphertext string) string {
 	cipherBytes, err := hex.DecodeString(ciphertext)
 	if err != nil {
-		fmt.Println("invalid ciphertext, we need hex ciphertext")
+		return "invalid ciphertext, we need hex ciphertext"
 	}
 	plaintext := ""
 	for i := 0; i < len(cipherBytes)/8; i++ {
 		plainByte := c.Decrypt(cipherBytes[i*8 : i*8+8])
 		plaintext += string(plainByte)
 	}
-	return plaintext
+	return "plaintext:" + plaintext
 }
 
 func main() {
@@ -40,18 +40,19 @@ func main() {
 	run := true
 	fmt.Print("please input key: ")
 	c := mydes.NewCipher([]byte(readText()))
+	fmt.Println("cipher has been initialized")
 	for run {
-		fmt.Println("Options:\n(1)Encrypt, (2)Decrypt, (3)Change Key, (4)Quit")
+		fmt.Println("\nOptions:\n(1)Encrypt, (2)Decrypt, (3)Change Key, (4)Quit")
 		_, _ = fmt.Scan(&option)
 		switch option {
 		default:
 			fmt.Println("invalid input")
 		case 1:
 			fmt.Println("please input plaintext")
-			fmt.Println("ciphertext:", desEncrypt(c, readText()))
+			fmt.Println(desEncrypt(c, readText()))
 		case 2:
 			fmt.Println("please input ciphertext")
-			fmt.Println("plaintext:", desDecrypt(c, readText()))
+			fmt.Println(desDecrypt(c, readText()))
 		case 3:
 			fmt.Println("please input key")
 			c = mydes.NewCipher([]byte(readText()))
@@ -62,6 +63,6 @@ func main() {
 }
 
 func readText() (text string) {
-	_, _ = fmt.Scanln(&text)
+	_, _ = fmt.Scan(&text)
 	return
 }
