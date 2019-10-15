@@ -1,9 +1,10 @@
 package main
 
 import (
-	mydes "../DES"
 	"encoding/hex"
 	"fmt"
+
+	mydes "../DES"
 )
 
 var version = "frankonly's DES v0.1"
