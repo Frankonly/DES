@@ -4,7 +4,7 @@ import (
 	"encoding/hex"
 	"fmt"
 
-	mydes "../DES"
+	mydes "../des"
 )
 
 var version = "frankonly's DES v0.1"
